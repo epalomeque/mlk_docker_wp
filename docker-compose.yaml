@@ -1,0 +1,35 @@
+services:
+  wp_db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: MySQLRootPassword
+      MYSQL_DATABASE: MySQLDatabaseName
+      MYSQL_USER: MySQLUsername
+      MYSQL_PASSWORD: MySQLUserPassword
+      MYSQL_TCP_PORT: 52000
+  wordpress:
+    depends_on:
+      - wp_db
+    image: wordpress:latest
+    restart: always
+    ports:
+      - "8070:80"
+    environment:
+      WORDPRESS_DB_HOST: wp_db:52000
+      WORDPRESS_DB_USER: MySQLUsername
+      WORDPRESS_DB_PASSWORD: MySQLUserPassword
+      WORDPRESS_DB_NAME: MySQLDatabaseName
+    volumes:
+      - "./html:/var/www/html"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8071:80"
+    environment:
+      PMA_HOST: wp_db:52000
+      PMA_USER: MySQLUsername
+      PMA_PASSWORD: MySQLUserPassword
+volumes:
+  mysql: {}
