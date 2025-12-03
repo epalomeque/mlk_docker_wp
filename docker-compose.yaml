@@ -3,33 +3,33 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: MySQLRootPassword
-      MYSQL_DATABASE: MySQLDatabaseName
-      MYSQL_USER: MySQLUsername
-      MYSQL_PASSWORD: MySQLUserPassword
-      MYSQL_TCP_PORT: 52000
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
   wordpress:
     depends_on:
       - wp_db
     image: wordpress:latest
     restart: always
     ports:
-      - "8070:80"
+      - "${WORDPRESS_PORT | 8070}:80"
     environment:
-      WORDPRESS_DB_HOST: wp_db:52000
-      WORDPRESS_DB_USER: MySQLUsername
-      WORDPRESS_DB_PASSWORD: MySQLUserPassword
-      WORDPRESS_DB_NAME: MySQLDatabaseName
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - "./html:/var/www/html"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - "8071:80"
+      - "${PMA_PORT | 8071}:80"
     environment:
-      PMA_HOST: wp_db:52000
-      PMA_USER: MySQLUsername
-      PMA_PASSWORD: MySQLUserPassword
+      PMA_HOST: ${PMA_HOST}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
 volumes:
   mysql: {}
