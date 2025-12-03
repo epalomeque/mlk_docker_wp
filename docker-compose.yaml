@@ -14,7 +14,7 @@ services:
     image: wordpress:latest
     restart: always
     ports:
-      - "${WORDPRESS_PORT | 8070}:80"
+      - "${WORDPRESS_PORT:-8070}:80"
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -26,7 +26,7 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - "${PMA_PORT | 8071}:80"
+      - "${PMA_PORT:-8071}:80"
     environment:
       PMA_HOST: ${PMA_HOST}
       PMA_USER: ${PMA_USER}
